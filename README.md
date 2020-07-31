@@ -15,3 +15,4 @@ import { HorizontalSectionList } from "react-native-horizontal-category-list";
                     data={data}
                     renderItem={(item) => <View key={"item" + item} style={itemStyle}><Text>{item.key}</Text></View>} />
 ```
+![structure](https://github.com/lucia-super/react-native-horizontal-category-list/blob/master/base.mov "基本效果")

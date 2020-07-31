@@ -1,5 +1,6 @@
 # react-native-horizontal-category-list
 horizontal scrollable list, Display category information by tabs.
+横向滚动条，并且带定位功能
 
 ##可用属性
 

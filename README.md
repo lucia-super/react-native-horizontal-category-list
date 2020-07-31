@@ -1,6 +1,18 @@
 # react-native-horizontal-category-list
 horizontal scrollable list, Display category information by tabs.
 
+##可用属性
+
+```
+data：required， 数据源
+tabStyle：optional tab的基本样式
+selectedTabTextStyle：optional 选中之后文本的样式
+selectedBarStyle：optional 选中之后移动的条状bar的样式
+renderItem： required 渲染Item内容
+renderDivider: optional 渲染分界面的divider
+
+```
+
 steps:
 
 * 引入库

@@ -22,7 +22,7 @@ steps:
 ```
 import { HorizontalSectionList } from "react-native-horizontal-category-list";
 ```
-* 简单的例子，默认红色的标签栏
+** 简单的例子，默认红色的标签栏
 ```
 <HorizontalSectionList
                     data={data}
@@ -30,7 +30,7 @@ import { HorizontalSectionList } from "react-native-horizontal-category-list";
 ```
 ![structure](https://github.com/lucia-super/react-native-horizontal-category-list/blob/master/base.gif "基本效果")
 
-* tabs 样式的例子
+** tabs 自定义样式的例子
 ```
                 <HorizontalSectionList
                     data={data}

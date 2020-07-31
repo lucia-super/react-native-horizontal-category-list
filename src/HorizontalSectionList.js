@@ -55,7 +55,6 @@ export default class HorizontalSectionList extends React.Component {
     render() {
         const { data } = this.props;
 
-
         const allItems = this.prepareData(data);
         return <View style={styles.container}>
             <View style={styles.header}>

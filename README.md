@@ -24,6 +24,44 @@ import { HorizontalSectionList } from "react-native-horizontal-category-list";
 ```
 ##  简单的例子，默认红色的标签栏 ## 
 ```
+const data = [
+    {
+        label: "你好",
+        items: [
+            { key: "name" },
+            { key: "测试A1" },
+            { key: "测试A2" },
+            { key: "测试A3" },
+            { key: "测试A4" }
+        ]
+    },
+    {
+        label: "测试",
+        items: [
+            { key: "nameB" },
+            { key: "测试B" }
+        ]
+    },
+    {
+        label: "的分",
+        items: [
+            { key: "nameC" },
+            { key: "测试C" }
+        ]
+    },
+    {
+        label: "舒服",
+        items: [
+            { key: "nameD" },
+            { key: "nameD1" },
+            { key: "nameD2" },
+            { key: "nameD3" },
+            { key: "nameD4" },
+            { key: "测试D" }
+        ]
+    }
+];
+
 <HorizontalSectionList
                     data={data}
                     renderItem={(item) => <View key={"item" + item} style={itemStyle}><Text>{item.key}</Text></View>} />

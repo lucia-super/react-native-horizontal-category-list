@@ -3,7 +3,7 @@
   "version": "1.0.3",
   "description": "horizontal scrollable list, Display category information by tabs.",
   "repository": {
-    "url": "https://github.com/lucia-super/react-native-horizontal-list.git"
+    "url": "https://github.com/lucia-super/react-native-horizontal-category-list"
   },
   "keywords": [
     "react-native",

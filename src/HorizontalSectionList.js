@@ -1,188 +1,223 @@
 import React from "react";
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from "react-native";
 
+/**
+ * @author lucia wu
+ * @description horizontal two-level classification label function component
+ */
 export default class HorizontalSectionList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.scroll = null;
-        this.state = {
-            selectedTabIndex: 0,
-            tabsContainerWidth: null,
-            tabsWidth: null
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.scroll = null;
+    this.state = {
+      selectedTabIndex: 0,
+      tabsContainerWidth: null,
+      tabsWidth: null
+    };
+  }
 
-    /**
-     * render tab bar
-     */
-    renderTabs() {
-        const { data, tabStyle, selectedTabTextStyle, selectedBarStyle } = this.props;
-        const { selectedTabIndex, tabsWidth } = this.state;
+  /**
+   * render tab bar
+   */
+  renderTabs() {
+    const { data, tabStyle, selectedTabTextStyle, selectedBarStyle } =
+      this.props;
+    const { selectedTabIndex, tabsWidth } = this.state;
 
-        const tabs = [];
-        data.forEach((element, index) => {
-            tabs.push(<TouchableOpacity
-                key={"tabs" + index}
-                style={[styles.tabs, tabStyle]}
-                onLayout={({ nativeEvent }) => this.onTabLayout(nativeEvent, index)}
-                onPress={this.locationTo.bind(this, index)}>
-                <Text style={[styles.tabText,
-                index === selectedTabIndex ? styles.selectedTabText : {},
-                index === selectedTabIndex ? selectedTabTextStyle : {}]}>
-                    {element.label}
-                </Text>
-                {index === selectedTabIndex && <View style={[styles.progressBlock, { width: tabsWidth ? tabsWidth[index] : 0 }, selectedBarStyle]} />}
-            </TouchableOpacity>);
-        });
-        return tabs;
-    }
-    /**
-     * render item
-     * @param {Object} param0 item object
-     */
-    renderItemContent({ item }) {
-        const { renderItem, renderDivider } = this.props;
-        if (item.isDivider) {
-            return renderDivider ? renderDivider(item) : <View key={"divider" + item.groupIndex} style={styles.itemDivider} />;
-        } else {
-            return renderItem(item);
-        }
-    }
-
-    /**
-     * render function
-     */
-    render() {
-        const { data } = this.props;
-
-        const allItems = this.prepareData(data);
-        return <View style={styles.container}>
-            <View style={styles.header}>
-                <View style={styles.headerContent} onLayout={({ nativeEvent }) => this.onTabsViewLayout(nativeEvent)}>
-                    {
-                        this.renderTabs()
-                    }
-                </View>
-            </View>
-            <FlatList
-                style={styles.scrollContent}
-                ref={(e) => { this.scroll = e; }}
-                data={allItems}
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}
-                initialNumToRender={4}
-                renderItem={this.renderItemContent.bind(this)}
-                keyExtractor={(item, index) => "item" + index}
-                onScroll={({ nativeEvent }) => this.onScroll(nativeEvent)}
+    const tabs = [];
+    data.forEach((element, index) => {
+      tabs.push(
+        <TouchableOpacity
+          key={'HorizontalSectionTabs ' + index}
+          style={[styles.tabs, tabStyle]}
+          onLayout={({ nativeEvent }) => this.onTabLayout(nativeEvent, index)}
+          onPress={this.locationTo.bind(this, index)}
+        >
+          <Text
+            style={[
+              styles.tabText,
+              index === selectedTabIndex ? styles.selectedTabText : {},
+              index === selectedTabIndex ? selectedTabTextStyle : {}
+            ]}
+          >
+            {element.label}
+          </Text>
+          {index === selectedTabIndex && (
+            <View
+              style={[
+                styles.progressBlock,
+                { width: tabsWidth ? tabsWidth[index] : 0 },
+                selectedBarStyle
+              ]}
             />
-        </View >;
-    }
+          )}
+        </TouchableOpacity>
+      );
+    });
+    return tabs;
+  }
 
-    onTabLayout(nativeEvent, index) {
-        const { tabsWidth } = this.state;
-        if (!tabsWidth) {
-            const newTabsWidth = [];
-            newTabsWidth[index] = nativeEvent.layout.width;
-            this.setState({
-                tabsWidth: newTabsWidth
-            });
-        } else {
-            tabsWidth[index] = nativeEvent.layout.width;
-            this.setState({
-                tabsWidth
-            });
+  /**
+   * render item
+   * @param {Object} param0 item object
+   */
+  renderItemContent({ item }) {
+    const { renderItem, renderDivider } = this.props;
+    if (item.isDivider) {
+      return renderDivider ? (
+        renderDivider(item)
+      ) : (
+        <View key={'HorizontalSectionDivider' + item.groupIndex} style={styles.itemDivider} />
+      );
+    } else {
+      return renderItem(item);
+    }
+  }
+
+  /**
+   * main render function
+   */
+  render() {
+    const { data } = this.props;
+
+    const allItems = this.prepareData(data);
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View
+            style={styles.headerContent}
+            onLayout={({ nativeEvent }) => this.onTabsViewLayout(nativeEvent)}
+          >
+            {this.renderTabs()}
+          </View>
+        </View>
+        <FlatList
+          style={styles.scrollContent}
+          ref={(e) => {
+            this.scroll = e;
+          }}
+          data={allItems}
+          showsHorizontalScrollIndicator={false}
+          horizontal={true}
+          initialNumToRender={4}
+          renderItem={this.renderItemContent.bind(this)}
+          keyExtractor={(item, index) => 'HorizontalSectionItem' + index}
+          onScroll={({ nativeEvent }) => this.onScroll(nativeEvent)}
+        />
+      </View>
+    );
+  }
+
+  onTabLayout(nativeEvent, index) {
+    const { tabsWidth } = this.state;
+    if (!tabsWidth) {
+      const newTabsWidth = [];
+      newTabsWidth[index] = nativeEvent.layout.width;
+      this.setState({
+        tabsWidth: newTabsWidth
+      });
+    } else {
+      tabsWidth[index] = nativeEvent.layout.width;
+      this.setState({
+        tabsWidth
+      });
+    }
+  }
+
+  onTabsViewLayout(nativeEvent) {
+    const { tabsContainerWidth } = this.state;
+    if (!tabsContainerWidth) {
+      this.setState({
+        tabsContainerWidth: nativeEvent.layout.width
+      });
+    }
+  }
+
+  locationTo(targetIndex) {
+    const { data } = this.props;
+    let locationIndex = 0;
+    let isCheck = false;
+    data.forEach((element, index) => {
+      if (index !== targetIndex && !isCheck) {
+        if (index !== 0) {
+          locationIndex += 1;
         }
-    }
+        locationIndex += element.items.length;
+      } else {
+        isCheck = true;
+      }
+    });
+    this.scroll &&
+      this.scroll.scrollToIndex({
+        index: locationIndex === 0 ? locationIndex : locationIndex + 1,
+        viewOffset: 0
+      });
+  }
 
-    onTabsViewLayout(nativeEvent) {
-        const { tabsContainerWidth } = this.state;
-        if (!tabsContainerWidth) {
-            this.setState({
-                tabsContainerWidth: nativeEvent.layout.width
-            });
-        }
-    }
+  onScroll(nativeEvent) {
+    const {
+      contentOffset: { x },
+      contentSize: { width },
+      layoutMeasurement: { width: screenWidth }
+    } = nativeEvent;
+    const equallyDivide = width - screenWidth;
+    const currentItem = x;
+    const percent = equallyDivide === 0 ? 0 : currentItem / equallyDivide;
 
-    locationTo(targetIndex) {
-        const { data } = this.props;
-        let locationIndex = 0;
-        let isCheck = false;
-        data.forEach((element, index) => {
-            if (index !== targetIndex && !isCheck) {
-                if (index !== 0) {
-                    locationIndex += 1;
-                }
-                locationIndex += element.items.length;
-            } else {
-                isCheck = true;
-            }
+    const { tabsWidth, tabsContainerWidth, selectedTabIndex } = this.state;
+    const blockLocation = tabsContainerWidth * percent;
+
+    const targetTabIndex = this.findCurrentTab(tabsWidth, blockLocation);
+    if (targetTabIndex !== selectedTabIndex) {
+      this.setState({
+        selectedTabIndex: targetTabIndex
+      });
+    }
+  }
+
+  /**
+   * render data
+   * @param {Array} data render array
+   */
+  prepareData(data) {
+    const allItems = [];
+
+    // insert divider
+    data.forEach((element, index) => {
+      if (index !== 0) {
+        allItems.push({
+          isDivider: true,
+          groupIndex: index
         });
-        this.scroll && this.scroll.scrollToIndex({
-            index: locationIndex === 0 ? locationIndex : locationIndex + 1,
-            viewOffset: 0
-        });
-    }
+      }
+      element.items.forEach((item) => {
+        allItems.push(item);
+      });
+    });
 
-    onScroll(nativeEvent) {
-        const { contentOffset: { x }, contentSize: { width }, layoutMeasurement: { width: screenWidth } } = nativeEvent;
-        const equallyDivide = width - screenWidth;
-        const currentItem = x;
-        const percent = equallyDivide === 0 ? 0 : currentItem / equallyDivide;
+    return allItems;
+  }
 
-        const { tabsWidth, tabsContainerWidth, selectedTabIndex } = this.state;
-        const blockLocation = tabsContainerWidth * percent;
-
-        const targetTabIndex = this.findCurrentTab(tabsWidth, blockLocation);
-        if (targetTabIndex !== selectedTabIndex) {
-            this.setState({
-                selectedTabIndex: targetTabIndex
-            });
+  findCurrentTab(tabsWidth, location) {
+    let targetIndex = 0;
+    if (tabsWidth) {
+      let stepWidth = 0;
+      let isCheck = false;
+      const length = tabsWidth.length;
+      tabsWidth.forEach((itemWidth, index) => {
+        stepWidth += itemWidth;
+        if (location <= stepWidth && !isCheck) {
+          targetIndex = index;
+          isCheck = true;
         }
-    }
-
-    /**
-     * render data
-     * @param {Array} data render array
-     */
-    prepareData(data) {
-        const allItems = [];
-
-        // insert divider
-        data.forEach((element, index) => {
-            if (index !== 0) {
-                allItems.push({
-                    isDivider: true,
-                    groupIndex: index
-                });
-            }
-            element.items.forEach((item) => {
-                allItems.push(item);
-            });
-        });
-
-        return allItems;
-    }
-
-    findCurrentTab(tabsWidth, location) {
-        let targetIndex = 0;
-        if (tabsWidth) {
-            let stepWidth = 0;
-            let isCheck = false;
-            const length = tabsWidth.length;
-            tabsWidth.forEach((itemWidth, index) => {
-                stepWidth += itemWidth;
-                if (location <= stepWidth && !isCheck) {
-                    targetIndex = index;
-                    isCheck = true;
-                }
-                if (index === length - 1 && location > stepWidth) {
-                    targetIndex = index;
-                    isCheck = true;
-                }
-            });
+        if (index === length - 1 && location > stepWidth) {
+          targetIndex = index;
+          isCheck = true;
         }
-        return targetIndex;
+      });
     }
+    return targetIndex;
+  }
 }
 
 // style
